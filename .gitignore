@@ -1,0 +1,53 @@
+# Environment & Secrets — NEVER commit these
+.env
+.env.*
+!.env.example
+
+# SMART-on-FHIR Private Keys — NEVER commit
+keys/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# Virtual Environments
+venv/
+.venv/
+env/
+.env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local scratch files
+scratch/
+tmp/
