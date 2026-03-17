@@ -69,13 +69,30 @@ Once an AI agent is connected to EHR-MCP, it can:
 
 ---
 
+## Does This Actually Work in Real Hospitals?
+
+Yes — and there is peer-reviewed research to support it.
+
+In September 2025, researchers at Keio University Hospital (Japan) published a study titled **"EHR-MCP: Real-world Evaluation of Clinical Information Retrieval by Large Language Models via Model Context Protocol"** (Masayoshi et al., arXiv:2509.15957). They built a custom MCP framework integrated directly with their hospital EHR database, connected GPT-4.1 via a LangGraph ReAct agent, and tested it across six clinical tasks with real patients.
+
+**What they found:**
+- The LLM consistently selected and executed the correct MCP tools
+- Near-perfect accuracy on most clinical retrieval tasks
+- The primary challenge was complex tasks requiring time-dependent calculations
+- Most errors came from incorrect arguments or misreading tool results — not from the protocol itself
+
+Their conclusion: EHR-MCP provides a solid infrastructure foundation for hospital AI agents. This repository is a direct extension of that concept — open-sourced, vendor-agnostic, and built for the broader healthcare AI ecosystem.
+
+> *"EHR-MCP provides an infrastructure for secure, consistent data access and may serve as a foundation for hospital AI agents."*
+> — Masayoshi et al., 2025
+
+---
+
 ## Who Built This and Why?
 
-EHR-MCP was designed by [John Faulkner](https://linkedin.com/in/johnathonfaulkner), Agentic AI Architect and founder of [The Faulkner Group](https://thefaulknergroupadvisors.com).
+This implementation was built by [John Faulkner](https://linkedin.com/in/johnathonfaulkner), Agentic AI Architect and founder of [The Faulkner Group](https://thefaulknergroupadvisors.com).
 
-John spent 14 years building and implementing Epic EHR systems across 12 enterprise health systems. He watched the same integration problems get rebuilt from scratch at every organization, by every team, for every new tool.
-
-EHR-MCP is the protocol he wished existed. It is open-source so that the whole healthcare AI ecosystem benefits — not just one vendor or one health system.
+John spent 14 years building and implementing Epic EHR systems across 12 enterprise health systems. He watched the same integration problems get rebuilt from scratch at every organization, by every team, for every new tool. After reading the Masayoshi et al. research validating the EHR-MCP approach in a real hospital setting, he built this open-source, vendor-agnostic implementation to make that infrastructure available to any health system — regardless of which EHR they run.
 
 ---
 
@@ -98,5 +115,6 @@ Any production deployment should be reviewed by your organization's privacy and 
 |---|---|
 | Full technical documentation | [README.md](./README.md) |
 | How to contribute | [CONTRIBUTING.md](./CONTRIBUTING.md) |
+| Original research paper | [arXiv:2509.15957](https://doi.org/10.48550/arXiv.2509.15957) |
 | The Faulkner Group | [thefaulknergroupadvisors.com](https://thefaulknergroupadvisors.com) |
 | LinkedIn | [linkedin.com/in/johnathonfaulkner](https://linkedin.com/in/johnathonfaulkner) |
