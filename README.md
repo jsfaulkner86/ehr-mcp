@@ -39,7 +39,26 @@ Agent (LangGraph / CrewAI / LangChain / AutoGen)
 ```
 
 ---
+```mermaid
+flowchart TD
+    A[Agent\nLangGraph · CrewAI · LangChain · AutoGen] -->|MCP Tool Call| B[EHR-MCP Server\nserver.py]
 
+    B --> C{Tool Router}
+
+    C -->|get_patient_context| D[ClinicalContextPackager\ncontext_packager.py]
+    C -->|get_patient / get_conditions\nget_medications / get_observations\nget_allergies / get_encounters\nget_diagnostic_reports| E[FHIRClient\nfhir_client.py]
+    C -->|search_fhir| E
+
+    D --> E
+
+    E --> F[SMART-on-FHIR Auth\nauth.py\nRS384 JWT → Bearer Token]
+    F --> G[(FHIR R4 Server\nEpic · Cerner · Any)]
+
+    G -->|FHIR Resources| E
+    E -->|Assembled Bundle| D
+    D -->|ClinicalContextBundle| B
+    B -->|TextContent| A
+```
 ## MCP Tool Reference
 
 | Tool | FHIR Resource(s) | Description |
