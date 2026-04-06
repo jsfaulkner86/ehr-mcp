@@ -2,15 +2,12 @@
 
 <br />
 
-```
- ███████╗██╗  ██╗██████╗      ██╗██████╗██████╗  ██╗ ██████╗ █████╗
- ██╔════╝██║  ██║██╔═══██╗     ██║██╔═══██╗██╔═══██╗██║██╔════╝██╔══██╗
- █████╗  ██████╔╝███████║███████║██║   ██║██║   ██║██║██║     ███████║
- ██╔══╝  ██╔══██╗██╔══██║╚════██║██║   ██║██║   ██║██║██║     ██╔══██║
- ███████╗██║  ██║██║  ██║     ██║╚██████╔╝╚██████╔╝██║╚██████╗██║  ██║
- ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚═╝ ╚═════╝  ╚═════╝ ╚═╝ ╚═════╝╚═╝  ╚═╝
-```
+<h1>⚕️ EHR-MCP</h1>
 
+**Framework-agnostic interoperability for multi-agent healthcare AI systems.**
+One protocol layer. Any EHR. Any agent framework.
+
+<br />
 ### EHR-MCP
 
 **Framework-agnostic interoperability for multi-agent healthcare AI systems.**  
