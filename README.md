@@ -2,29 +2,28 @@
 
 <br />
 
-<h1>⚕️ EHR-MCP</h1>
+# ⚕️ EHR-MCP
 
-**Framework-agnostic interoperability for multi-agent healthcare AI systems.**
-One protocol layer. Any EHR. Any agent framework.
+**Every healthcare AI team builds the same EHR integration layer from scratch.**  
+**SMART-on-FHIR auth. FHIR R4 client. Vendor normalization. Data contract.**  
+**Every. Single. Team.**
 
-<br />
-### EHR-MCP
-
-**Framework-agnostic interoperability for multi-agent healthcare AI systems.**  
-One protocol layer. Any EHR. Any agent framework.
+EHR-MCP is that layer — **built once, reusable across every agent in your stack.**  
+One protocol. Any EHR. Any agent framework.
 
 <br />
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![FHIR R4](https://img.shields.io/badge/FHIR-R4-orange?style=flat-square)](https://hl7.org/fhir/R4/)
+[![FHIR R4](https://img.shields.io/badge/FHIR-R4-FF6B35?style=flat-square)](https://hl7.org/fhir/R4/)
 [![MCP](https://img.shields.io/badge/Model%20Context%20Protocol-Compatible-6B46C1?style=flat-square)](https://modelcontextprotocol.io)
-[![SMART on FHIR](https://img.shields.io/badge/SMART--on--FHIR-Backend%20Services-blue?style=flat-square)](https://hl7.org/fhir/smart-app-launch/backend-services.html)
-[![Epic](https://img.shields.io/badge/Epic-Sandbox%20Tested-red?style=flat-square)](#ehr-compatibility)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![SMART on FHIR](https://img.shields.io/badge/SMART--on--FHIR-Backend%20Services-0EA5E9?style=flat-square)](https://hl7.org/fhir/smart-app-launch/backend-services.html)
+[![Epic](https://img.shields.io/badge/Epic-Sandbox%20Tested-C8102E?style=flat-square)](#ehr-compatibility)
+[![arXiv](https://img.shields.io/badge/arXiv-2509.15957-b31b1b?style=flat-square)](https://doi.org/10.48550/arXiv.2509.15957)
+[![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)](LICENSE)
 
 <br />
 
-[Docs](./docs/) · [MCP Tool Reference](#mcp-tool-reference) · [Quick Start](#getting-started) · [Roadmap](#roadmap)
+[MCP Tool Reference](#mcp-tool-reference) · [ClinicalContextBundle](#clinicalcontextbundle) · [Quick Start](#getting-started) · [Agent Integration](#connecting-an-agent) · [Roadmap](#roadmap)
 
 <br />
 
@@ -32,11 +31,15 @@ One protocol layer. Any EHR. Any agent framework.
 
 ---
 
-## The Problem
+## The Problem Every Healthcare AI Team Has
 
-Every healthcare AI agent needs patient data. But today, each agent team builds their own FHIR client, their own auth layer, their own data schema — from scratch. The result is fragmented, duplicated infrastructure that doesn't compose across agents.
+I've watched this happen across 12 enterprise Epic health system deployments. A team decides to build a clinical AI agent. They have an LLM. They have a workflow. Then they hit the EHR integration wall:
 
-EHR-MCP solves this with a single, framework-agnostic interoperability layer: a Model Context Protocol (MCP) server that translates clinical EHR data into structured context **any agent can consume**.
+> SMART-on-FHIR app registration. RS384 JWT key pair generation. Token exchange implementation. FHIR R4 resource fetching. Vendor-specific quirk normalization. A typed data contract that downstream agents can actually work with.
+
+That's 2–4 weeks of infrastructure work before a single agent prompt is written. And every team at every health system in every agentic AI product company is doing it **from scratch**.
+
+EHR-MCP is the protocol layer that eliminates that work. Your agent calls `get_patient_context(patient_id)`. It gets back a typed `ClinicalContextBundle`. The auth, the FHIR parsing, the vendor normalization — handled.
 
 ---
 
@@ -61,14 +64,14 @@ Agent (LangGraph / CrewAI / LangChain / AutoGen)
 
 ```mermaid
 flowchart TD
-    A[Agent\nLangGraph · CrewAI · LangChain · AutoGen] -->|MCP Tool Call| B[EHR-MCP Server\nserver.py]
+    A["Agent\nLangGraph · CrewAI · LangChain · AutoGen"] -->|MCP Tool Call| B["EHR-MCP Server\nserver.py"]
     B --> C{Tool Router}
-    C -->|get_patient_context| D[ClinicalContextPackager\ncontext_packager.py]
-    C -->|get_patient / get_conditions\nget_medications / get_observations\nget_allergies / get_encounters\nget_diagnostic_reports| E[FHIRClient\nfhir_client.py]
+    C -->|get_patient_context| D["ClinicalContextPackager\ncontext_packager.py"]
+    C -->|"get_patient / get_conditions\nget_medications / get_observations\nget_allergies / get_encounters\nget_diagnostic_reports"| E["FHIRClient\nfhir_client.py"]
     C -->|search_fhir| E
     D --> E
-    E --> F[SMART-on-FHIR Auth\nauth.py\nRS384 JWT → Bearer Token]
-    F --> G[(FHIR R4 Server\nEpic · Cerner · Any)]
+    E --> F["SMART-on-FHIR Auth\nauth.py\nRS384 JWT → Bearer Token"]
+    F --> G[("FHIR R4 Server\nEpic · Cerner · Any")]
     G -->|FHIR Resources| E
     E -->|Assembled Bundle| D
     D -->|ClinicalContextBundle| B
@@ -136,6 +139,20 @@ EHR-MCP implements [SMART on FHIR Backend Services](https://hl7.org/fhir/smart-a
 
 ---
 
+## Use It With These Agents
+
+EHR-MCP is the shared data layer for the healthcare agent portfolio. Any agent that needs patient context calls in through here:
+
+| Agent | Integration Point |
+|---|---|
+| [`clinical-triage-agent`](https://github.com/jsfaulkner86/clinical-triage-agent) | Patient context for acuity classification |
+| [`pph-risk-scoring-agent`](https://github.com/jsfaulkner86/pph-risk-scoring-agent) | Live vitals + labs for risk scoring |
+| [`prior-auth-research-agent`](https://github.com/jsfaulkner86/prior-auth-research-agent) | Diagnosis + medication context for auth criteria |
+| [`healthcare-compliance-guardrail`](https://github.com/jsfaulkner86/healthcare-compliance-guardrail) | PHI-safe patient context delivery |
+| Your custom agent | Any MCP-compatible framework |
+
+---
+
 ## Getting Started
 
 ```bash
@@ -160,12 +177,14 @@ MCP_SERVER_VERSION=0.1.0
 OPENAI_API_KEY=your_key_here   # Only required for summary generation
 ```
 
+**Epic FHIR Sandbox:** [fhir.epic.com](https://fhir.epic.com) — free registration, full R4 resource access for development.
+
 ---
 
 ## Connecting an Agent
 
 ```python
-# LangGraph example
+# LangGraph + langchain-mcp-adapters
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 async with MultiServerMCPClient({
@@ -177,22 +196,34 @@ async with MultiServerMCPClient({
 }) as client:
     tools = client.get_tools()
     # tools now includes get_patient_context, get_conditions, etc.
+    # Works identically with CrewAI, LangChain, AutoGen
 ```
 
 Any MCP-compatible agent framework connects the same way — no framework-specific integration code required.
 
 ---
 
-## Why This Matters for Health Tech Founders
+## Academic Validation
 
-If you're building a healthcare AI product, connecting to an EHR means:
+This implementation was inspired by peer-reviewed research validating LLM + EHR-MCP in a live hospital environment:
 
-- ⚙️ SMART-on-FHIR app registration with the health system
-- 🔐 RS384 JWT auth implementation
-- 🏥 FHIR R4 resource parsing across vendor-specific quirks
-- 📦 A data contract your agents can actually work with
+> **EHR-MCP: Real-world Evaluation of Clinical Information Retrieval by Large Language Models via Model Context Protocol**  
+> Masayoshi et al. — *arXiv:2509.15957* — [https://doi.org/10.48550/arXiv.2509.15957](https://doi.org/10.48550/arXiv.2509.15957)
 
-EHR-MCP is that layer — **built once, reusable across every agent in your stack.**
+Their study demonstrated near-perfect MCP tool selection accuracy using GPT-4.1 + LangGraph ReAct in a live hospital EHR. This repository extends that concept with vendor-agnostic FHIR abstraction, SMART Backend Services auth, multi-framework compatibility, and a fully open-source implementation.
+
+---
+
+## Known Failure Modes
+
+Production healthcare AI needs an honest failure mode table. Here's mine.
+
+| Failure Mode | Impact | Mitigation |
+|---|---|---|
+| Epic FHIR rate limiting | Bundle assembly delays under load | Exponential backoff + per-resource timeout handling |
+| RS384 token expiry during long agent session | Silent FHIR auth failure | Pre-expiry token refresh with 5-min rotation buffer |
+| Vendor FHIR quirks (non-standard resource shapes) | Normalization failures | Vendor-specific adapters in roadmap; current Epic validation tested |
+| PHI in raw `search_fhir` output | Unmasked PHI reaching agent | Route through [`healthcare-compliance-guardrail`](https://github.com/jsfaulkner86/healthcare-compliance-guardrail) for PHI-safe delivery |
 
 ---
 
@@ -201,33 +232,24 @@ EHR-MCP is that layer — **built once, reusable across every agent in your stac
 - [ ] Epic FHIR sandbox end-to-end integration test suite
 - [ ] Bidirectional write support (`Task`, `Communication`, `ServiceRequest`)
 - [ ] `Coverage` + `Claim` tools for prior auth workflows
+- [ ] Cerner (Oracle Health) validation
 - [ ] OpenAPI spec for REST-based agent integration
-- [ ] Reasoning and clinical impact assessment layer
 
 ---
 
-## Academic Foundation
+## If You're Building Healthcare AI
 
-This implementation was inspired by peer-reviewed research validating LLM + EHR-MCP in a live hospital environment:
+If this protocol is useful to you, a ⭐ helps others find it.
 
-> **EHR-MCP: Real-world Evaluation of Clinical Information Retrieval by Large Language Models via Model Context Protocol**  
-> Masayoshi et al. — *arXiv:2509.15957* — [https://doi.org/10.48550/arXiv.2509.15957](https://doi.org/10.48550/arXiv.2509.15957)
-
-Their study demonstrated near-perfect MCP tool selection accuracy using GPT-4.1 + LangGraph ReAct in a live hospital EHR. This repository extends their concept with vendor-agnostic FHIR abstraction, SMART Backend Services auth, multi-framework compatibility, and an open-source implementation.
-
----
-
-## About
-
-Built by [John Faulkner](https://linkedin.com/in/johnathonfaulkner), Agentic AI Architect and founder of [The Faulkner Group](https://thefaulknergroupadvisors.com).  
-Designed from interoperability gaps observed across **14 years and 12 Epic enterprise health system implementations**.
-
-*Part of a portfolio of healthcare agentic AI systems → [github.com/jsfaulkner86](https://github.com/jsfaulkner86)*
+If you're a health system or women's health tech company building multi-agent clinical AI and need the interoperability layer designed properly — this is the kind of infrastructure I architect at [The Faulkner Group](https://thefaulknergroupadvisors.com).
 
 ---
 
 <div align="center">
 
 *The connective tissue for multi-agent healthcare AI.*
+
+*Part of The Faulkner Group's healthcare agentic AI portfolio → [github.com/jsfaulkner86](https://github.com/jsfaulkner86)*  
+*Built from 14 years and 12 Epic enterprise health system deployments.*
 
 </div>
