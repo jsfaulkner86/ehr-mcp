@@ -1,0 +1,12 @@
+services:
+  ehr-mcp:
+    build: .
+    env_file: .env
+    # Required for MCP stdio transport
+    stdin_open: true
+    tty: true
+    # Mount your SMART-on-FHIR private key at runtime
+    # Generate with: openssl genrsa -out keys/private_key.pem 2048
+    volumes:
+      - ./keys:/app/keys:ro
+    restart: unless-stopped
