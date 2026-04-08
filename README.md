@@ -13,11 +13,20 @@ One protocol. Any EHR. Any agent framework.
 
 <br />
 
+[![GitHub Stars](https://img.shields.io/github/stars/jsfaulkner86/ehr-mcp?style=flat-square&logo=github&color=yellow)](https://github.com/jsfaulkner86/ehr-mcp/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/jsfaulkner86/ehr-mcp?style=flat-square&logo=github&color=blue)](https://github.com/jsfaulkner86/ehr-mcp/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/jsfaulkner86/ehr-mcp?style=flat-square&logo=github&color=orange)](https://github.com/jsfaulkner86/ehr-mcp/issues)
+
+<br />
+
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![FHIR R4](https://img.shields.io/badge/FHIR-R4-FF6B35?style=flat-square)](https://hl7.org/fhir/R4/)
 [![MCP](https://img.shields.io/badge/Model%20Context%20Protocol-Compatible-6B46C1?style=flat-square)](https://modelcontextprotocol.io)
 [![SMART on FHIR](https://img.shields.io/badge/SMART--on--FHIR-Backend%20Services-0EA5E9?style=flat-square)](https://hl7.org/fhir/smart-app-launch/backend-services.html)
 [![Epic](https://img.shields.io/badge/Epic-Sandbox%20Tested-C8102E?style=flat-square)](#ehr-compatibility)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker)
+[![Claude Desktop](https://img.shields.io/badge/Claude%20Desktop-Compatible-D97706?style=flat-square)](#claude-desktop)
+[![Cursor](https://img.shields.io/badge/Cursor-Compatible-000000?style=flat-square)](#cursor--windsurf)
 [![arXiv](https://img.shields.io/badge/arXiv-2509.15957-b31b1b?style=flat-square)](https://doi.org/10.48550/arXiv.2509.15957)
 [![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)](LICENSE)
 
@@ -139,21 +148,12 @@ EHR-MCP implements [SMART on FHIR Backend Services](https://hl7.org/fhir/smart-a
 
 ---
 
-## Use It With These Agents
-
-EHR-MCP is the shared data layer for the healthcare agent portfolio. Any agent that needs patient context calls in through here:
-
-| Agent | Integration Point |
-|---|---|
-| [`clinical-triage-agent`](https://github.com/jsfaulkner86/clinical-triage-agent) | Patient context for acuity classification |
-| [`pph-risk-scoring-agent`](https://github.com/jsfaulkner86/pph-risk-scoring-agent) | Live vitals + labs for risk scoring |
-| [`prior-auth-research-agent`](https://github.com/jsfaulkner86/prior-auth-research-agent) | Diagnosis + medication context for auth criteria |
-| [`healthcare-compliance-guardrail`](https://github.com/jsfaulkner86/healthcare-compliance-guardrail) | PHI-safe patient context delivery |
-| Your custom agent | Any MCP-compatible framework |
-
----
-
 ## Getting Started
+
+Choose your install method:
+
+<details open>
+<summary><b>🐍 Python (pip)</b></summary>
 
 ```bash
 git clone https://github.com/jsfaulkner86/ehr-mcp
@@ -164,6 +164,88 @@ pip install -r requirements.txt
 cp .env.example .env
 python main.py
 ```
+
+</details>
+
+<details>
+<summary><b>🐳 Docker</b></summary>
+
+```bash
+docker build -t ehr-mcp .
+docker run --env-file .env ehr-mcp
+```
+
+Or with Docker Compose:
+
+```yaml
+# docker-compose.yml
+services:
+  ehr-mcp:
+    build: .
+    env_file: .env
+    stdin_open: true
+    tty: true
+```
+
+```bash
+docker compose up
+```
+
+</details>
+
+<details>
+<summary><b>🤖 Claude Desktop</b></summary>
+
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "ehr-mcp": {
+      "command": "python",
+      "args": ["-m", "ehr_mcp.server"],
+      "cwd": "/path/to/ehr-mcp",
+      "env": {
+        "FHIR_BASE_URL": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+        "SMART_TOKEN_URL": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+        "SMART_CLIENT_ID": "your_client_id",
+        "SMART_PRIVATE_KEY_PATH": "/path/to/private_key.pem"
+      }
+    }
+  }
+}
+```
+
+Restart Claude Desktop. You'll see EHR tools available in the tool picker.
+
+</details>
+
+<details>
+<summary><b>🖱️ Cursor / Windsurf</b></summary>
+
+Add to your MCP config (`.cursor/mcp.json` or `.codeium/windsurf/mcp_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "ehr-mcp": {
+      "command": "python",
+      "args": ["-m", "ehr_mcp.server"],
+      "cwd": "/path/to/ehr-mcp",
+      "env": {
+        "FHIR_BASE_URL": "your_fhir_base_url",
+        "SMART_TOKEN_URL": "your_token_url",
+        "SMART_CLIENT_ID": "your_client_id",
+        "SMART_PRIVATE_KEY_PATH": "/path/to/private_key.pem"
+      }
+    }
+  }
+}
+```
+
+Reload your editor. EHR-MCP tools will be available to your AI coding assistant.
+
+</details>
 
 ### Environment Variables
 
@@ -200,6 +282,20 @@ async with MultiServerMCPClient({
 ```
 
 Any MCP-compatible agent framework connects the same way — no framework-specific integration code required.
+
+---
+
+## Use It With These Agents
+
+EHR-MCP is the shared data layer for the healthcare agent portfolio. Any agent that needs patient context calls in through here:
+
+| Agent | Integration Point |
+|---|---|
+| [`clinical-triage-agent`](https://github.com/jsfaulkner86/clinical-triage-agent) | Patient context for acuity classification |
+| [`pph-risk-scoring-agent`](https://github.com/jsfaulkner86/pph-risk-scoring-agent) | Live vitals + labs for risk scoring |
+| [`prior-auth-research-agent`](https://github.com/jsfaulkner86/prior-auth-research-agent) | Diagnosis + medication context for auth criteria |
+| [`healthcare-compliance-guardrail`](https://github.com/jsfaulkner86/healthcare-compliance-guardrail) | PHI-safe patient context delivery |
+| Your custom agent | Any MCP-compatible framework |
 
 ---
 
