@@ -1,0 +1,43 @@
+# Secrets & credentials — never in image layers
+.env
+.env.*
+keys/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyc
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Dev & IDE
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docs & repo metadata (not needed in image)
+*.md
+.gitignore
+.git/
+
+# Logs
+*.log
+logs/
