@@ -42,11 +42,11 @@ One protocol. Any EHR. Any agent framework.
 
 ## The Problem Every Healthcare AI Team Has
 
-I've watched this happen across 12 enterprise Epic health system deployments. A team decides to build a clinical AI agent. They have an LLM. They have a workflow. Then they hit the EHR integration wall:
+I’ve watched this happen across 12 enterprise Epic health system deployments. A team decides to build a clinical AI agent. They have an LLM. They have a workflow. Then they hit the EHR integration wall:
 
 > SMART-on-FHIR app registration. RS384 JWT key pair generation. Token exchange implementation. FHIR R4 resource fetching. Vendor-specific quirk normalization. A typed data contract that downstream agents can actually work with.
 
-That's 2–4 weeks of infrastructure work before a single agent prompt is written. And every team at every health system in every agentic AI product company is doing it **from scratch**.
+That’s 2–4 weeks of infrastructure work before a single agent prompt is written. And every team at every health system in every agentic AI product company is doing it **from scratch**.
 
 EHR-MCP is the protocol layer that eliminates that work. Your agent calls `get_patient_context(patient_id)`. It gets back a typed `ClinicalContextBundle`. The auth, the FHIR parsing, the vendor normalization — handled.
 
@@ -133,7 +133,7 @@ EHR-MCP implements [SMART on FHIR Backend Services](https://hl7.org/fhir/smart-a
 
 - **Auth flow:** RS384 JWT assertion → token exchange → Bearer token on all FHIR requests
 - **No user login required** — designed for backend agent workflows
-- **Epic-compatible** — aligns with Epic's Non-Patient-Facing App registration requirements
+- **Epic-compatible** — aligns with Epic’s Non-Patient-Facing App registration requirements
 
 ---
 
@@ -216,12 +216,12 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-Restart Claude Desktop. You'll see EHR tools available in the tool picker.
+Restart Claude Desktop. You’ll see EHR tools available in the tool picker.
 
 </details>
 
 <details>
-<summary><b>🖱️ Cursor / Windsurf</b></summary>
+<summary><b>🖥️ Cursor / Windsurf</b></summary>
 
 Add to your MCP config (`.cursor/mcp.json` or `.codeium/windsurf/mcp_config.json`):
 
@@ -312,7 +312,7 @@ Their study demonstrated near-perfect MCP tool selection accuracy using GPT-4.1 
 
 ## Known Failure Modes
 
-Production healthcare AI needs an honest failure mode table. Here's mine.
+Production healthcare AI needs an honest failure mode table. Here’s mine.
 
 | Failure Mode | Impact | Mitigation |
 |---|---|---|
@@ -333,11 +333,23 @@ Production healthcare AI needs an honest failure mode table. Here's mine.
 
 ---
 
-## If You're Building Healthcare AI
+## If You’re Building Healthcare AI
 
 If this protocol is useful to you, a ⭐ helps others find it.
 
-If you're a health system or women's health tech company building multi-agent clinical AI and need the interoperability layer designed properly — this is the kind of infrastructure I architect at [The Faulkner Group](https://thefaulknergroupadvisors.com).
+If you’re a health system or women’s health tech company building multi-agent clinical AI and need the interoperability layer designed properly — this is the kind of infrastructure I architect at [The Faulkner Group](https://thefaulknergroupadvisors.com).
+
+---
+
+## Disclaimer
+
+This repository is a **developer infrastructure library and integration protocol** — not a cleared medical device, not legal advice, and not a guarantee of regulatory compliance. It is not intended for use as a clinical decision support tool or patient safety system without independent validation, security review, and regulatory clearance appropriate to your jurisdiction and intended use. PHI handling, HIPAA alignment, and production deployment require independent assessment. See [DISCLAIMER.md](./DISCLAIMER.md) for full terms.
+
+---
+
+## License
+
+MIT — See [LICENSE](./LICENSE).
 
 ---
 
@@ -345,7 +357,7 @@ If you're a health system or women's health tech company building multi-agent cl
 
 *The connective tissue for multi-agent healthcare AI.*
 
-*Part of The Faulkner Group's healthcare agentic AI portfolio → [github.com/jsfaulkner86](https://github.com/jsfaulkner86)*  
+*Part of The Faulkner Group’s healthcare agentic AI portfolio → [github.com/jsfaulkner86](https://github.com/jsfaulkner86)*  
 *Built from 14 years and 12 Epic enterprise health system deployments.*
 
 </div>
