@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "ehr-mcp": {
+      "command": "python",
+      "args": ["-m", "ehr_mcp.server"],
+      "cwd": ".",
+      "env": {
+        "FHIR_BASE_URL": "${FHIR_BASE_URL}",
+        "SMART_TOKEN_URL": "${SMART_TOKEN_URL}",
+        "SMART_CLIENT_ID": "${SMART_CLIENT_ID}",
+        "SMART_PRIVATE_KEY_PATH": "${SMART_PRIVATE_KEY_PATH}",
+        "MCP_SERVER_NAME": "ehr-mcp",
+        "MCP_SERVER_VERSION": "0.1.0"
+      },
+      "description": "FHIR R4 MCP server — SMART-on-FHIR auth, vendor normalization, ClinicalContextBundle. Epic sandbox tested.",
+      "tools": [
+        "get_patient_context",
+        "get_patient",
+        "get_conditions",
+        "get_medications",
+        "get_observations",
+        "get_allergies",
+        "get_encounters",
+        "get_diagnostic_reports",
+        "search_fhir"
+      ]
+    }
+  }
+}
