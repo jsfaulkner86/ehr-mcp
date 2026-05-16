@@ -80,14 +80,23 @@ line-length = 100
 target-version = "py311"
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP", "B"]
+# E/F/W: pycodestyle + pyflakes (errors only, no style wars)
+# UP: pyupgrade (modern Python syntax)
+# B: flake8-bugbear (likely bugs)
+# Intentionally excludes I (isort) — import order is not enforced in CI
+# to avoid noise on existing codebase.
+select = ["E", "F", "W", "UP", "B"]
 ignore = [
-  "B008",   # do not perform function calls in default arguments
+  "B008",   # function calls in default arguments — common in FastAPI/MCP patterns
   "E501",   # line length — handled by black
+  "E402",   # module-level import not at top — load_dotenv() must precede app imports
+  "W291",   # trailing whitespace — handled by black
+  "W293",   # whitespace before comment — handled by black
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]  # allow assert in tests
+"tests/*" = ["S101", "F401"]  # allow assert + unused imports in tests
+"main.py" = ["E402"]          # load_dotenv() before imports is intentional
 
 # ---------------------------------------------------------------------------
 # Black — formatter

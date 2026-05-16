@@ -10,15 +10,16 @@ Auth: SMART-on-FHIR Backend Services (system-to-system)
 
 import asyncio
 import logging
+
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # Must run before ehr_mcp imports to populate env vars  # noqa: E402
 
-from ehr_mcp.server import create_server
+from ehr_mcp.server import create_server  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 
 logger = logging.getLogger(__name__)
