@@ -1,0 +1,117 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "ehr-mcp"
+version = "0.1.0"
+description = "FHIR R4 MCP server — SMART-on-FHIR auth, vendor normalization, ClinicalContextBundle for healthcare AI agents"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [
+  { name = "John Faulkner", email = "john@thefaulknergroupadvisors.com" },
+]
+keywords = [
+  "fhir",
+  "ehr",
+  "mcp",
+  "model-context-protocol",
+  "healthcare-ai",
+  "smart-on-fhir",
+  "epic",
+  "langchain",
+  "langgraph",
+  "clinical-ai",
+  "womens-health",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Healthcare Industry",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+  "mcp>=1.0.0",
+  "httpx>=0.27.0",
+  "pydantic>=2.6.0",
+  "python-dotenv>=1.0.0",
+  "pyjwt>=2.8.0",
+  "cryptography>=42.0.0",
+  "langchain>=0.2.0",
+  "langchain-openai>=0.1.0",
+  "crewai>=0.30.0",
+  "openai>=1.30.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
+  "pytest-mock>=3.12.0",
+  "ruff>=0.4.0",
+  "black>=24.0.0",
+  "mypy>=1.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/jsfaulkner86/ehr-mcp"
+Repository = "https://github.com/jsfaulkner86/ehr-mcp"
+Issues = "https://github.com/jsfaulkner86/ehr-mcp/issues"
+"The Faulkner Group" = "https://thefaulknergroupadvisors.com"
+
+[project.scripts]
+ehr-mcp = "ehr_mcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ehr_mcp*"]
+
+# ---------------------------------------------------------------------------
+# Ruff — linter
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+  "B008",   # do not perform function calls in default arguments
+  "E501",   # line length — handled by black
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]  # allow assert in tests
+
+# ---------------------------------------------------------------------------
+# Black — formatter
+# ---------------------------------------------------------------------------
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+# ---------------------------------------------------------------------------
+# pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+# ---------------------------------------------------------------------------
+# mypy
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
