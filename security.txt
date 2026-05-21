@@ -1,0 +1,14 @@
+# https://securitytxt.org — RFC 9116 compliant
+Contact: mailto:security@thefaulknergroupadvisors.com
+Contact: https://github.com/jsfaulkner86/ehr-mcp/security/advisories/new
+Expires: 2027-05-20T00:00:00.000Z
+Preferred-Languages: en
+Policy: https://github.com/jsfaulkner86/ehr-mcp/blob/main/SECURITY.md
+Canonical: https://thefaulknergroupadvisors.com/.well-known/security.txt
+Acknowledgments: https://github.com/jsfaulkner86/ehr-mcp/blob/main/SECURITY.md#coordinated-disclosure-policy
+
+# Healthcare Note: This repository provides MCP-layer access to EHR systems
+# including Epic and FHIR R4/R5 APIs. It operates on PHI-adjacent infrastructure.
+# Suspected PHI or EHR write-access vulnerabilities must be reported privately
+# and treated as potential HIPAA breach events. Do NOT include real patient
+# data in any disclosure.
